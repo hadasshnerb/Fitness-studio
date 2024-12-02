@@ -1,2 +1,4 @@
-package gym.management.Sessions;public class Session {
+package gym.management.Sessions;
+
+public class Session {
 }

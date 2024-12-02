@@ -1,4 +1,4 @@
-package gym.management.Sessions;
+package gym.management;
 
 public class Secretary {
 }

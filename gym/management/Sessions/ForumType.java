@@ -1,2 +1,4 @@
-package gym.management.Sessions;public enum ForumType {
+package gym.management.Sessions;
+
+public enum ForumType {
 }
