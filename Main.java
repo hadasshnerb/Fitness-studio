@@ -59,9 +59,9 @@ public class Main {
         Instructor i2 = gymSecretary.hireInstructor(p5, 90, new ArrayList<>(Arrays.asList(SessionType.ThaiBoxing, SessionType.Pilates, SessionType.MachinePilates)));
         Instructor i3 = gymSecretary.hireInstructor(p6,50, new ArrayList<>(Arrays.asList(SessionType.Pilates, SessionType.Ninja)));
 
-        Session s1 = gymSecretary.addSession(SessionType.Pilates, "23-12-2024 10:00", ForumType.All, i2);
+        Session s1 = gymSecretary.addSession(SessionType.Pilates, "23-01-2025 10:00", ForumType.All, i2);
         Session s2 = gymSecretary.addSession(SessionType.MachinePilates, "23-10-2024 08:00", ForumType.Female, i1);
-        Session s3 = gymSecretary.addSession(SessionType.Pilates, "25-12-2024 09:30", ForumType.Seniors, i3);
+        Session s3 = gymSecretary.addSession(SessionType.Pilates, "25-01-2025 09:30", ForumType.Seniors, i3);
         Session s4 = gymSecretary.addSession(SessionType.ThaiBoxing, "01-01-2025 14:00", ForumType.All, i2);
         Session s5 = gymSecretary.addSession(SessionType.Ninja, "14-01-2025 20:00", ForumType.All, i3);
         Session s6 = gymSecretary.addSession(SessionType.ThaiBoxing, "14-01-2025 20:00", ForumType.Male, i1);
@@ -72,16 +72,17 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        gymSecretary.registerClientToLesson(c1, s1);
-        gymSecretary.registerClientToLesson(c1, s2);
-        gymSecretary.registerClientToLesson(c1, s4);
-        gymSecretary.registerClientToLesson(c4, s4);
-        gymSecretary.registerClientToLesson(c1, s3);
-        gymSecretary.registerClientToLesson(c5, s2);
-        gymSecretary.registerClientToLesson(c5, s2);
+        gymSecretary.registerClientToLesson(c1, s1); // nofar
+        gymSecretary.registerClientToLesson(c1, s2); // לא בעתיד
+        gymSecretary.registerClientToLesson(c1, s4); // nofar
+        gymSecretary.registerClientToLesson(c4, s4); //yuval
 
-        gymSecretary.registerClientToLesson(c1, s5);
-        gymSecretary.registerClientToLesson(c2, s5);
+        gymSecretary.registerClientToLesson(c1, s3); // nofar isnt senior
+        gymSecretary.registerClientToLesson(c5, s2); // not in futer
+        gymSecretary.registerClientToLesson(c5, s2); // --> maybe print all
+
+        gymSecretary.registerClientToLesson(c1, s5); // sababa
+        gymSecretary.registerClientToLesson(c2, s5); // down its good
         gymSecretary.registerClientToLesson(c3, s5);
         gymSecretary.registerClientToLesson(c4, s5);
         gymSecretary.registerClientToLesson(c6, s5);
