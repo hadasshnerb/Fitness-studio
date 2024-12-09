@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Session extends Sender {
     private SessionType type;
@@ -20,16 +21,18 @@ public class Session extends Sender {
     private double price;
     private List<Client> participants;
 
-    protected Session(SessionType type, String dateTimeStr, ForumType forum, Instructor instructor) {
+    public Session(SessionType type, String dateTimeStr, ForumType forum, Instructor instructor) {
         super();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         this.type = type;
         this.dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         this.forum = forum;
-        this.instructor = instructor;
+
+        // וודא שהמדריך אינו null
+        this.instructor = Objects.requireNonNull(instructor, "Instructor cannot be null");
         this.participants = new ArrayList<>();
 
-        // Set capacity and price based on SessionType
+        // הגדרת מחיר וקיבולת לפי סוג הסשן
         switch (type) {
             case Pilates:
                 this.price = 60;
@@ -47,8 +50,6 @@ public class Session extends Sender {
                 this.price = 150;
                 this.capacity = 5;
                 break;
-            default:
-                break;
         }
     }
 
@@ -57,10 +58,9 @@ public class Session extends Sender {
     }
 
     public boolean isInFuture() {
-        LocalDateTime currentDateTime = LocalDateTime.of(2025, 1, 1, 0, 0);
+        LocalDateTime currentDateTime = LocalDateTime.now();
         return this.dateTime.isAfter(currentDateTime);
     }
-
 
     public LocalDateTime getDateTime() {
         return dateTime;
@@ -110,14 +110,42 @@ public class Session extends Sender {
     }
 
     public void registerClient(Client client) {
+        if (isFull()) {
+            throw new IllegalStateException("No available spots for session");
+        }
         participants.add(client);
-        attach(client); // For notifications
+        attach(client); // לצורכי הודעות
     }
 
     @Override
     public String toString() {
-        return "Session Type: " + type + " | Date: " + dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) +
-                " | Forum: " + forum + " | Instructor: " + instructor.getName() +
+        return "Session Type: " + type +
+                " | Date: " + dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")) +
+                " | Forum: " + forum +
+                " | Instructor: " + instructor.getName() +
                 " | Participants: " + participants.size() + "/" + capacity;
     }
-}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false; // אם האובייקט הוא null או לא מאותו סוג
+        }
+        if (obj == this) {
+            return true; // אם מדובר באותו אובייקט
+        }
+
+        Session session = (Session) obj;
+
+        // השוואת תכונות קריטיות בלבד
+        return type == session.type &&
+                dateTime.equals(session.dateTime) &&
+                forum == session.forum &&
+                instructor.equals(session.instructor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, dateTime, forum, instructor);
+    }
+    }

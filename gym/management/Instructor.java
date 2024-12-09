@@ -43,13 +43,14 @@ public class Instructor extends Person {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Instructor other = (Instructor) obj;
-        return this.id == other.id; // השוואה לפי ID ייחודי
+        Person person = (Person) obj; // Use the superclass for comparison
+        return this.id == person.getId();  // Compare based on the unique ID
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Integer.hashCode(this.id);
     }
-}
+    }
 

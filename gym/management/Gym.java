@@ -22,7 +22,7 @@ public class Gym {
         instructors = new ArrayList<>();
         sessions = new ArrayList<>();
         actionHistory = new ArrayList<>();
-        balance = 0;
+        balance = 9420;
     }
 
     public static Gym getInstance() {
@@ -33,14 +33,20 @@ public class Gym {
     }
 
     public void setSecretary(Person person, double salary) {
-        if (this.secretary != null) {
+        if (this.secretary == null) {
+            // אם אין מזכירה מוגדרת, אתחל מזכירה חדשה
+            this.secretary = new Secretary(person, salary, this);
+        } else {
+            // אם כבר קיימת מזכירה, בטל את המזכירה הקיימת והחלף אותה בחדשה
             this.secretary.deactivate();
+            this.secretary = new Secretary(person, salary, this);
+            addAction("A new secretary has replaced the previous one: " + person.getName());
         }
-        this.secretary = new Secretary(person, salary, this);
-        addAction("A new secretary has started working at the gym: " + person.getName());
-        clients.removeIf(c -> c.getId() == person.getId());
-        this.secretary.setBalance(0);
     }
+
+
+
+
 
 
     public Secretary getSecretary() {
