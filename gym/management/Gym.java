@@ -22,7 +22,7 @@ public class Gym {
         instructors = new ArrayList<>();
         sessions = new ArrayList<>();
         actionHistory = new ArrayList<>();
-        balance = 9420;
+        balance = 0;
     }
 
     public static Gym getInstance() {
@@ -32,16 +32,14 @@ public class Gym {
         return instance;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setSecretary(Person person, double salary) {
         if (this.secretary != null) {
             this.secretary.deactivate();
         }
         this.secretary = new Secretary(person, salary, this);
         addAction("A new secretary has started working at the gym: " + person.getName());
+        clients.removeIf(c -> c.getId() == person.getId());
+        this.secretary.setBalance(0);
     }
 
 
@@ -101,25 +99,33 @@ public class Gym {
         return balance;
     }
 
+    public void setName(String s){
+        this.name = s;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Gym Name: ").append(name).append("\n");
         sb.append("Gym Secretary: ").append(secretary).append("\n");
         sb.append("Gym Balance: ").append((int) balance).append("\n\n");
+
         sb.append("Clients Data:\n");
         for (Client client : clients) {
             sb.append(client).append("\n");
         }
+
         sb.append("\nEmployees Data:\n");
         for (Instructor instructor : instructors) {
             sb.append(instructor).append("\n");
         }
         sb.append(secretary).append("\n");
+
         sb.append("\nSessions Data:\n");
         for (Session session : sessions) {
             sb.append(session).append("\n");
         }
+
         return sb.toString();
     }
 }

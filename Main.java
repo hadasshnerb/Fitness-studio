@@ -72,17 +72,17 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        gymSecretary.registerClientToLesson(c1, s1); // nofar
-        gymSecretary.registerClientToLesson(c1, s2); // לא בעתיד
-        gymSecretary.registerClientToLesson(c1, s4); // nofar
-        gymSecretary.registerClientToLesson(c4, s4); //yuval
+        gymSecretary.registerClientToLesson(c1, s1);
+        gymSecretary.registerClientToLesson(c1, s2);
+        gymSecretary.registerClientToLesson(c1, s4);
+        gymSecretary.registerClientToLesson(c4, s4);
 
-        gymSecretary.registerClientToLesson(c1, s3); // nofar isnt senior
-        gymSecretary.registerClientToLesson(c5, s2); // not in futer
-        gymSecretary.registerClientToLesson(c5, s2); // --> maybe print all
+        gymSecretary.registerClientToLesson(c1, s3);
+        gymSecretary.registerClientToLesson(c5, s2);
+        gymSecretary.registerClientToLesson(c5, s2);
 
-        gymSecretary.registerClientToLesson(c1, s5); // sababa
-        gymSecretary.registerClientToLesson(c2, s5); // down its good
+        gymSecretary.registerClientToLesson(c1, s5);
+        gymSecretary.registerClientToLesson(c2, s5);
         gymSecretary.registerClientToLesson(c3, s5);
         gymSecretary.registerClientToLesson(c4, s5);
         gymSecretary.registerClientToLesson(c6, s5);
@@ -127,7 +127,4 @@ public class Main {
 
         System.out.print(gym);
     }
-
-
-
 }

@@ -5,6 +5,7 @@ import gym.management.Sessions.SessionType;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 public class Instructor extends Person {
     private double salaryPerHour;
@@ -37,6 +38,18 @@ public class Instructor extends Person {
         }
         roleInfo = roleInfo.substring(0, roleInfo.length() - 2); // Remove last comma
         return super.toString() + roleInfo;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Instructor other = (Instructor) obj;
+        return this.id == other.id; // השוואה לפי ID ייחודי
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

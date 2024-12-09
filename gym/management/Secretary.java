@@ -17,9 +17,8 @@ public class Secretary extends Person {
     private Gym gym;
     private boolean active;
     private Sender sender;
-    private final Map<Client, Set<Session>> registrationAttempts = new HashMap<>();
 
-
+    private double balance;
     public Secretary(Person person, double salary, Gym gym) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         this.id = person.getId();
@@ -27,6 +26,7 @@ public class Secretary extends Person {
         this.gym = gym;
         this.active = true;
         this.sender = new Sender();
+
     }
 
     public void deactivate() {
@@ -153,8 +153,6 @@ public class Secretary extends Person {
                 + " for price: " + (int) session.getPrice());
     }
 
-
-
     public void notify(Session session, String message) {
         checkActive();
         session.notifyReceivers(message);
@@ -188,21 +186,15 @@ public class Secretary extends Person {
 
     public void paySalaries() {
         checkActive();
+
         for (Instructor instructor : gym.getInstructors()) {
-            double totalHours = 0;
-            // Calculate total hours based on sessions they have
-            for (Session session : gym.getSessions()) {
-                if (session.getInstructor().equals(instructor)) {
-                    totalHours += 1; // Assuming each session is 1 hour
-                }
-            }
-            double salary = totalHours * instructor.getSalaryPerHour();
-            instructor.addBalance(salary);
-            gym.deductBalance(salary);
+            long totalHours = gym.getSessions().stream()
+                    .peek(session -> System.out.println("Session instructor: " + session.getInstructor()))
+                    .filter(session -> session.getInstructor().equals(instructor))
+                    .count();
+            double instructorSalary = totalHours * instructor.getSalaryPerHour();
+            instructor.addBalance(instructorSalary); // עדכון יתרת המדריך
         }
-        // Pay secretary salary
-        this.addBalance(this.salary);
-        gym.deductBalance(this.salary);
         gym.addAction("Salaries have been paid to all employees");
     }
 
@@ -213,6 +205,11 @@ public class Secretary extends Person {
             System.out.println(action);
         }
     }
+    @Override
+    public void addBalance(double amount) {
+        this.balance = balance + amount;
+    }
+
 
     @Override
     public String toString() {

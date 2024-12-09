@@ -59,6 +59,9 @@ public class Person implements Notification {
     public void addBalance(double amount) {
         this.balance += amount;
     }
+    public void setBalance(double amount){
+        this.balance = amount;
+    }
 
     public List<String> getNotifications() {
         return notifications;
