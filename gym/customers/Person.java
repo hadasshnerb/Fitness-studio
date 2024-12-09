@@ -45,12 +45,12 @@ public class Person implements Notification {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
+
     public int getAge() {
+        // כאן מניחים שהתאריך הנוכחי הוא 01-01-2025 לפי דרישות המשימה
         LocalDate today = LocalDate.of(2025, 1, 1);
         return Period.between(dateOfBirth, today).getYears();
     }
-
-
 
     public void deductBalance(double amount) {
         this.balance = balance - amount;
@@ -59,6 +59,7 @@ public class Person implements Notification {
     public void addBalance(double amount) {
         this.balance += amount;
     }
+
     public void setBalance(double amount){
         this.balance = amount;
     }
@@ -74,7 +75,9 @@ public class Person implements Notification {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | Name: " + name + " | Gender: " + gender + " | Birthday: " + dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " | Age: " + getAge() + " | Balance: " + (int) balance;
+        return "ID: " + id + " | Name: " + name + " | Gender: " + gender + " | Birthday: " +
+                dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " | Age: " + getAge() +
+                " | Balance: " + (int) balance;
     }
 
     @Override

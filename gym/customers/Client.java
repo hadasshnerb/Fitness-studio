@@ -1,7 +1,7 @@
 package gym.customers;
 
-import gym.observer.Receiver;
 import java.time.format.DateTimeFormatter;
+
 import gym.observer.Receiver;
 
 public class Client extends Person implements Receiver {
@@ -16,18 +16,60 @@ public class Client extends Person implements Receiver {
 
     @Override
     public void update(String message) {
-        addNotification(message);
+        originalPerson.addNotification(message);
+    }
+
+    @Override
+    public double getBalance() {
+        return originalPerson.getBalance();
     }
 
     @Override
     public void addBalance(double amount) {
-        super.addBalance(amount);
-        originalPerson.addBalance(amount); // Sync with the original person
+        originalPerson.addBalance(amount);
     }
 
     @Override
     public void deductBalance(double amount) {
-        super.deductBalance(amount);
-        originalPerson.deductBalance(amount); // Sync with the original person
+        originalPerson.deductBalance(amount);
+    }
+
+    @Override
+    public String getName() {
+        return originalPerson.getName();
+    }
+
+    @Override
+    public int getAge() {
+        return originalPerson.getAge();
+    }
+
+    @Override
+    public java.time.LocalDate getDateOfBirth() {
+        return originalPerson.getDateOfBirth();
+    }
+
+    @Override
+    public java.util.List<String> getNotifications() {
+        return originalPerson.getNotifications();
+    }
+
+    @Override
+    public void addNotification(String message) {
+        originalPerson.addNotification(message);
+    }
+
+    @Override
+    public Gender getGender() {
+        return originalPerson.getGender();
+    }
+
+    @Override
+    public String toString() {
+        // Build the string from originalPerson to ensure correct synchronization
+        return "ID: " + originalPerson.getId() + " | Name: " + originalPerson.getName() +
+                " | Gender: " + originalPerson.getGender() + " | Birthday: " +
+                originalPerson.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) +
+                " | Age: " + originalPerson.getAge() + " | Balance: " + (int) originalPerson.getBalance();
     }
 }

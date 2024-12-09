@@ -5,7 +5,6 @@ import gym.customers.Client;
 import gym.customers.Person;
 import gym.customers.Gender;
 import gym.management.Sessions.*;
-import gym.observer.Receiver;
 import gym.observer.Sender;
 
 import java.time.LocalDate;
@@ -18,17 +17,17 @@ public class Secretary extends Person {
     private Gym gym;
     private boolean active;
     private Sender sender;
+    private Person originalPerson;
 
     public Secretary(Person person, double salary, Gym gym) {
-        // Use the person's existing data, including their balance, gender, etc.
         super(person.getName(), person.getBalance(), person.getGender(),
                 person.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         this.id = person.getId();
+        this.originalPerson = person;
         this.salary = salary;
         this.gym = gym;
         this.active = true;
         this.sender = new Sender();
-        // No separate balance field, we rely on Person's balance field.
     }
 
     public void deactivate() {
@@ -39,6 +38,51 @@ public class Secretary extends Person {
         if (!active) {
             throw new NullPointerException("Error: Former secretaries are not permitted to perform actions");
         }
+    }
+
+    @Override
+    public double getBalance() {
+        return originalPerson.getBalance();
+    }
+
+    @Override
+    public void addBalance(double amount) {
+        originalPerson.addBalance(amount);
+    }
+
+    @Override
+    public void deductBalance(double amount) {
+        originalPerson.deductBalance(amount);
+    }
+
+    @Override
+    public String getName() {
+        return originalPerson.getName();
+    }
+
+    @Override
+    public Gender getGender() {
+        return originalPerson.getGender();
+    }
+
+    @Override
+    public LocalDate getDateOfBirth() {
+        return originalPerson.getDateOfBirth();
+    }
+
+    @Override
+    public int getAge() {
+        return originalPerson.getAge();
+    }
+
+    @Override
+    public List<String> getNotifications() {
+        return originalPerson.getNotifications();
+    }
+
+    @Override
+    public void addNotification(String message) {
+        originalPerson.addNotification(message);
     }
 
     public Client registerClient(Person person) throws DuplicateClientException, InvalidAgeException {
@@ -169,11 +213,11 @@ public class Secretary extends Person {
     public void notify(String message) {
         checkActive();
         for (Client c : gym.getClients()) {
-            sender.attach((Receiver)c);
+            sender.attach(c);
         }
         sender.notifyReceivers(message);
         for (Client c : gym.getClients()) {
-            sender.detach((Receiver)c);
+            sender.detach(c);
         }
         gym.addAction("A message was sent to all gym clients: " + message);
     }
@@ -189,13 +233,11 @@ public class Secretary extends Person {
             gym.deductBalance(instructorSalary);
         }
 
-        // Pay secretary salary: use Person's balance methods
+        // Pay secretary salary
         super.addBalance(this.salary);
         gym.deductBalance(this.salary);
         gym.addAction("Salaries have been paid to all employees");
     }
-
-
 
     public void printActions() {
         checkActive();
@@ -206,7 +248,13 @@ public class Secretary extends Person {
 
     @Override
     public String toString() {
-        String roleInfo = " | Role: Secretary | Salary per Month: " + (int) salary;
-        return super.toString() + roleInfo;
+        // Build from originalPerson:
+        return "ID: " + originalPerson.getId() + " | Name: " + originalPerson.getName() +
+                " | Gender: " + originalPerson.getGender() + " | Birthday: " +
+                originalPerson.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) +
+                " | Age: " + originalPerson.getAge() + " | Balance: " + (int) originalPerson.getBalance() +
+                " | Role: Secretary | Salary per Month: " + (int) salary;
     }
 }
+
+
