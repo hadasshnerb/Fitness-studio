@@ -30,10 +30,6 @@ public class Instructor extends Person {
         return salaryPerHour;
     }
 
-    public List<SessionType> getCertifiedSessions() {
-        return certifiedSessions;
-    }
-
     @Override
     public double getBalance() {
         return originalPerson.getBalance();
@@ -45,8 +41,8 @@ public class Instructor extends Person {
     }
 
     @Override
-    public void deductBalance(double amount) {
-        originalPerson.deductBalance(amount);
+    public void reduceBalance(double amount) {
+        originalPerson.reduceBalance(amount);
     }
 
     @Override

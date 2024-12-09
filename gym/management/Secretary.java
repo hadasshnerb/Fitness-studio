@@ -51,8 +51,8 @@ public class Secretary extends Person {
     }
 
     @Override
-    public void deductBalance(double amount) {
-        originalPerson.deductBalance(amount);
+    public void reduceBalance(double amount) {
+        originalPerson.reduceBalance(amount);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class Secretary extends Person {
 
     private void completeRegistration(Client client, Session session) {
         session.registerClient(client);
-        client.deductBalance(session.getPrice());
+        client.reduceBalance(session.getPrice());
         gym.addBalance(session.getPrice());
         gym.addAction("Registered client: " + client.getName() + " to session: "
                 + session.getType() + " on "

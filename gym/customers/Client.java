@@ -30,8 +30,8 @@ public class Client extends Person implements Receiver {
     }
 
     @Override
-    public void deductBalance(double amount) {
-        originalPerson.deductBalance(amount);
+    public void reduceBalance(double amount) {
+        originalPerson.reduceBalance(amount);
     }
 
     @Override

@@ -47,21 +47,16 @@ public class Person implements Notification {
     }
 
     public int getAge() {
-        // כאן מניחים שהתאריך הנוכחי הוא 01-01-2025 לפי דרישות המשימה
-        LocalDate today = LocalDate.of(2025, 1, 1);
+        LocalDate today = LocalDate.now();
         return Period.between(dateOfBirth, today).getYears();
     }
 
-    public void deductBalance(double amount) {
+    public void reduceBalance(double amount) {
         this.balance = balance - amount;
     }
 
     public void addBalance(double amount) {
         this.balance += amount;
-    }
-
-    public void setBalance(double amount){
-        this.balance = amount;
     }
 
     public List<String> getNotifications() {
