@@ -236,8 +236,12 @@ public class Secretary extends Person {
                 s.notifyReceivers(message);
             }
         }
-        gym.addAction("A message was sent to everyone registered for a session on " + dateStr + " : " + message);
+        // עדכון הפורמט של התאריך ל-yyyy-MM-dd
+        gym.addAction("A message was sent to everyone registered for a session on "
+                + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                + " : " + message);
     }
+
 
     public void notify(String message) {
         checkActive();
