@@ -11,45 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Session extends Sender {
-    private SessionType type;
-    private LocalDateTime dateTime;
-    private ForumType forum;
-    private Instructor instructor;
-    private int capacity;
-    private double price;
-    private List<Client> participants;
+public abstract class Session extends Sender {
+    protected SessionType type;
+    protected LocalDateTime dateTime;
+    protected ForumType forum;
+    protected Instructor instructor;
+    protected int capacity;
+    protected double price;
+    protected List<Client> participants;
 
-    public Session(SessionType type, String dateTimeStr, ForumType forum, Instructor instructor) {
+    protected Session(SessionType type, String dateTimeStr, ForumType forum, Instructor instructor) {
         super();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         this.type = type;
         this.dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         this.forum = forum;
-
-        // וודא שהמדריך אינו null
         this.instructor = Objects.requireNonNull(instructor, "Instructor cannot be null");
         this.participants = new ArrayList<>();
-
-        // הגדרת מחיר וקיבולת לפי סוג הסשן
-        switch (type) {
-            case Pilates:
-                this.price = 60;
-                this.capacity = 30;
-                break;
-            case MachinePilates:
-                this.price = 80;
-                this.capacity = 10;
-                break;
-            case ThaiBoxing:
-                this.price = 100;
-                this.capacity = 20;
-                break;
-            case Ninja:
-                this.price = 150;
-                this.capacity = 5;
-                break;
-        }
     }
 
     public SessionType getType() {
@@ -103,7 +81,7 @@ public class Session extends Sender {
             throw new IllegalStateException("No available spots for session");
         }
         participants.add(client);
-        attach(client); // לצורכי הודעות
+        attach(client); // For notifications
     }
 
     @Override
@@ -118,15 +96,14 @@ public class Session extends Sender {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
-            return false; // אם האובייקט הוא null או לא מאותו סוג
+            return false;
         }
         if (obj == this) {
-            return true; // אם מדובר באותו אובייקט
+            return true;
         }
 
         Session session = (Session) obj;
 
-        // השוואת תכונות קריטיות בלבד
         return type == session.type &&
                 dateTime.equals(session.dateTime) &&
                 forum == session.forum &&
@@ -137,4 +114,4 @@ public class Session extends Sender {
     public int hashCode() {
         return Objects.hash(type, dateTime, forum, instructor);
     }
-    }
+}
