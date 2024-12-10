@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Secretary extends Person {
+    private static Secretary instance; // Singleton instance
     private double salary;
     private Gym gym;
     private boolean active;
     private Sender sender;
     private Person originalPerson;
 
-    public Secretary(Person person, double salary, Gym gym) {
+    // Private constructor to prevent direct instantiation
+    private Secretary(Person person, double salary, Gym gym) {
         super(person.getName(), person.getBalance(), person.getGender(),
                 person.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         this.id = person.getId();
@@ -28,6 +30,33 @@ public class Secretary extends Person {
         this.gym = gym;
         this.active = true;
         this.sender = new Sender();
+    }
+
+    // Static method to get the Singleton instance
+    public static Secretary getInstance(Person person, double salary, Gym gym) {
+          if (instance == null) {
+                instance = new Secretary(person, salary, gym);
+        } else {
+            // Update the existing instance with new details
+            instance.updateDetails(person, salary, gym);
+        }
+        return instance;
+    }
+
+    // Method to reset the Singleton instance
+    public static void resetInstance() {
+        if (instance != null) {
+            instance.deactivate();
+        }
+        instance = null;
+    }
+
+    // Method to update the Secretary details
+    private void updateDetails(Person person, double salary, Gym gym) {
+        this.originalPerson = person;
+        this.salary = salary;
+        this.gym = gym;
+        this.active = true;
     }
 
     public void deactivate() {
