@@ -3,7 +3,6 @@ package gym.management.Sessions;
 import gym.customers.Client;
 import gym.customers.Gender;
 import gym.management.Instructor;
-import gym.observer.Receiver;
 import gym.observer.Sender;
 
 import java.time.LocalDateTime;
@@ -73,19 +72,9 @@ public class Session extends Sender {
     public Instructor getInstructor() {
         return instructor;
     }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
     public double getPrice() {
         return price;
     }
-
-    public List<Client> getParticipants() {
-        return participants;
-    }
-
     public boolean isFull() {
         return this.participants.size() >= this.capacity;
     }

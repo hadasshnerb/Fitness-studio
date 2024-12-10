@@ -22,7 +22,7 @@ public class Gym {
         instructors = new ArrayList<>();
         sessions = new ArrayList<>();
         actionHistory = new ArrayList<>();
-        balance = 9420;
+        balance = 0;
     }
 
     public static Gym getInstance() {
