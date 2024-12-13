@@ -33,11 +33,14 @@ public class Gym {
     }
 
     public void setSecretary(Person person, double salary) {
-        // Reset the existing Secretary if necessary
-        Secretary.resetInstance();
-        // Create or update the Secretary instance
-        this.secretary = Secretary.getInstance(person, salary, this);
-        addAction("A new secretary has started working at the gym: " + person.getName());
+        if (this.secretary == null) {
+            this.secretary = new Secretary(person, salary, this);
+            addAction("A new secretary has started working at the gym: " + person.getName());
+        } else {
+            this.secretary.deactivate();
+            this.secretary = new Secretary(person, salary, this);
+            addAction("A new secretary has started working at the gym: " + person.getName());
+        }
     }
 
 
