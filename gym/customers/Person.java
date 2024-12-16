@@ -10,20 +10,28 @@ public class Person implements Notification {
     private static int idCounter = 1111;
     protected int id;
     protected String name;
-    protected double balance;
     protected Gender gender;
     protected LocalDate dateOfBirth;
+    protected BankAccount bankAccount;
     protected List<String> notifications;
 
-    public Person(String name, double balance, Gender gender, String dateOfBirth) {
-        this.notifications = new ArrayList<>();
+    public Person(String name, double initialBalance, Gender gender, String dateOfBirth) {
         this.id = idCounter++;
         this.name = name;
-        this.balance = balance;
         this.gender = gender;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
+
+        this.bankAccount = new BankAccount(initialBalance);
         this.notifications = new ArrayList<>();
+    }
+    public Person(Person other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.gender = other.gender;
+        this.dateOfBirth = other.dateOfBirth;
+        this.bankAccount = other.bankAccount;
+        this.notifications = other.notifications;
     }
 
     public int getId() {
@@ -32,10 +40,6 @@ public class Person implements Notification {
 
     public String getName() {
         return name;
-    }
-
-    public double getBalance() {
-        return balance;
     }
 
     public Gender getGender() {
@@ -47,16 +51,19 @@ public class Person implements Notification {
     }
 
     public int getAge() {
-        LocalDate today = LocalDate.now();
-        return Period.between(dateOfBirth, today).getYears();
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public void reduceBalance(double amount) {
-        this.balance = balance - amount;
+    public double getBalance() {
+        return bankAccount.getBalance();
     }
 
     public void addBalance(double amount) {
-        this.balance += amount;
+        bankAccount.deposit(amount);
+    }
+
+    public void reduceBalance(double amount) {
+        bankAccount.withdraw(amount);
     }
 
     public List<String> getNotifications() {
@@ -70,17 +77,18 @@ public class Person implements Notification {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | Name: " + name + " | Gender: " + gender + " | Birthday: " +
-                dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " | Age: " + getAge() +
-                " | Balance: " + (int) balance;
+        return "ID: " + id
+                + " | Name: " + name
+                + " | Gender: " + gender
+                + " | Birthday: " + dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                + " | Age: " + getAge()
+                + " | Balance: " + bankAccount;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Person other = (Person) obj;
         return id == other.id;
     }
