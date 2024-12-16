@@ -123,8 +123,11 @@ public class Gym {
         sb.append(secretary).append("\n");
 
         sb.append("\nSessions Data:\n");
-        for (Session session : sessions) {
-            sb.append(session).append("\n");
+        for (int i = 0; i < sessions.size(); i++) {
+            sb.append(sessions.get(i));
+            if (i < sessions.size() - 1) {
+                sb.append("\n");
+            }
         }
 
         return sb.toString();
