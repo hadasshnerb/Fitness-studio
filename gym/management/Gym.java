@@ -7,6 +7,11 @@ import gym.management.Sessions.Session;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a gym management system.
+ * Handles clients, instructors, sessions, and administrative actions.
+ * Implements the Singleton design pattern to ensure only one instance of the gym exists.
+ */
 public class Gym {
     private static Gym instance;
     private String name;
@@ -17,6 +22,10 @@ public class Gym {
     private List<String> actionHistory;
     private double balance;
 
+    /**
+     * Private constructor to prevent direct instantiation.
+     * Initializes lists for clients, instructors, sessions, and action history.
+     */
     private Gym() {
         clients = new ArrayList<>();
         instructors = new ArrayList<>();
@@ -25,6 +34,11 @@ public class Gym {
         balance = 0;
     }
 
+    /**
+     * Returns the single instance of the Gym.
+     *
+     * @return the Gym instance
+     */
     public static Gym getInstance() {
         if (instance == null) {
             instance = new Gym();
@@ -32,6 +46,12 @@ public class Gym {
         return instance;
     }
 
+    /**
+     * Sets or replaces the secretary for the gym.
+     *
+     * @param person the person to assign as secretary
+     * @param salary the salary of the secretary
+     */
     public void setSecretary(Person person, double salary) {
         if (this.secretary == null) {
             this.secretary = new Secretary(person, salary, this);
@@ -43,67 +63,138 @@ public class Gym {
         }
     }
 
-
+    /**
+     * Returns the current secretary of the gym.
+     *
+     * @return the secretary
+     */
     public Secretary getSecretary() {
         return secretary;
     }
 
+    /**
+     * Checks if a client is registered in the gym.
+     *
+     * @param client the client to check
+     * @return true if the client is registered, false otherwise
+     */
     public boolean isClientRegistered(Client client) {
         return clients.contains(client);
     }
 
+    /**
+     * Adds a new client to the gym.
+     *
+     * @param client the client to add
+     */
     public void addClient(Client client) {
         clients.add(client);
     }
 
+    /**
+     * Removes a client from the gym.
+     *
+     * @param client the client to remove
+     */
     public void removeClient(Client client) {
         clients.remove(client);
     }
 
+    /**
+     * Returns the list of all clients registered in the gym.
+     *
+     * @return the list of clients
+     */
     public List<Client> getClients() {
         return clients;
     }
 
+    /**
+     * Adds a new instructor to the gym.
+     *
+     * @param instructor the instructor to add
+     */
     public void addInstructor(Instructor instructor) {
         instructors.add(instructor);
     }
 
+    /**
+     * Returns the list of all instructors in the gym.
+     *
+     * @return the list of instructors
+     */
     public List<Instructor> getInstructors() {
         return instructors;
     }
 
+    /**
+     * Adds a new session to the gym's schedule.
+     *
+     * @param session the session to add
+     */
     public void addSession(Session session) {
         sessions.add(session);
     }
 
+    /**
+     * Returns the list of all sessions in the gym.
+     *
+     * @return the list of sessions
+     */
     public List<Session> getSessions() {
         return sessions;
     }
 
+    /**
+     * Adds an action to the gym's action history.
+     *
+     * @param action the action to record
+     */
     public void addAction(String action) {
         actionHistory.add(action);
     }
 
+    /**
+     * Returns the list of all recorded actions.
+     *
+     * @return the action history
+     */
     public List<String> getActionHistory() {
         return actionHistory;
     }
 
+    /**
+     * Adds an amount to the gym's balance.
+     *
+     * @param amount the amount to add
+     */
     public void addBalance(double amount) {
         balance += amount;
     }
 
+    /**
+     * Deducts an amount from the gym's balance.
+     *
+     * @param amount the amount to deduct
+     */
     public void deductBalance(double amount) {
         balance -= amount;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setName(String s){
+    /**
+     * Sets the gym's name.
+     *
+     * @param s the name to set
+     */
+    public void setName(String s) {
         this.name = s;
     }
 
+    /**
+     * Returns a string representation of the gym's data, including clients, instructors, and sessions.
+     *
+     * @return a string with the gym's details
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
