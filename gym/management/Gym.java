@@ -3,6 +3,7 @@ package gym.management;
 import gym.customers.Client;
 import gym.customers.Person;
 import gym.management.Sessions.Session;
+import gym.observer.Sender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * Handles clients, instructors, sessions, and administrative actions.
  * Implements the Singleton design pattern to ensure only one instance of the gym exists.
  */
-public class Gym {
+public class Gym extends Sender { // Gym now extends Sender
     private static Gym instance;
     private String name;
     private Secretary secretary;
@@ -53,14 +54,11 @@ public class Gym {
      * @param salary the salary of the secretary
      */
     public void setSecretary(Person person, double salary) {
-        if (this.secretary == null) {
-            this.secretary = new Secretary(person, salary, this);
-            addAction("A new secretary has started working at the gym: " + person.getName());
-        } else {
+        if (this.secretary != null) {
             this.secretary.deactivate();
-            this.secretary = new Secretary(person, salary, this);
-            addAction("A new secretary has started working at the gym: " + person.getName());
         }
+        this.secretary = Secretary.createSecretary(person, salary, this);
+        addAction("A new secretary has started working at the gym: " + person.getName());
     }
 
     /**
@@ -188,6 +186,54 @@ public class Gym {
      */
     public void setName(String s) {
         this.name = s;
+    }
+
+    /**
+     * Sends a notification to all clients in the gym.
+     *
+     * @param message the notification message
+     */
+    public void notifyAllClients(String message) {
+        for (Client c : clients) {
+            attach(c);
+        }
+        notifyReceivers(message);
+        clearReceivers();
+    }
+
+    /**
+     * Sends a notification to all participants of a specific session.
+     *
+     * @param session the session whose participants will be notified
+     * @param message the notification message
+     */
+    public void notifySessionParticipants(Session session, String message) {
+        session.getParticipants().forEach(this::attach);
+        notifyReceivers(message);
+        clearReceivers();
+    }
+
+    /**
+     * Sends a notification to all participants in sessions on a specific date.
+     *
+     * @param dateStr the date in "dd-MM-yyyy" format
+     * @param message the notification message
+     */
+    public void notifySessionsOnDate(String dateStr, String message) {
+        for (Session s : sessions) {
+            if (s.getDateTime().toLocalDate().equals(java.time.LocalDate.parse(dateStr, java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy")))) {
+                s.getParticipants().forEach(this::attach);
+            }
+        }
+        notifyReceivers(message);
+        clearReceivers();
+    }
+
+    /**
+     * Clears the list of receivers attached to the gym.
+     */
+    private void clearReceivers() {
+        getReceivers().clear();
     }
 
     /**

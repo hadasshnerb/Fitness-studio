@@ -47,4 +47,8 @@ public class Sender {
             receiver.update(message);
         }
     }
+    protected List<Receiver> getReceivers() {
+        return receivers;
+    }
+
 }

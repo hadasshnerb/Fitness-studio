@@ -3,7 +3,6 @@ package gym.management.Sessions;
 import gym.customers.Client;
 import gym.customers.Gender;
 import gym.management.Instructor;
-import gym.observer.Sender;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +14,7 @@ import java.util.Objects;
  * Represents a gym session.
  * Serves as a base class for specific types of sessions, providing common properties and methods.
  */
-public abstract class Session extends Sender {
+public abstract class Session {
     protected SessionType type;
     protected LocalDateTime dateTime;
     protected ForumType forum;
@@ -49,6 +48,15 @@ public abstract class Session extends Sender {
      */
     public SessionType getType() {
         return type;
+    }
+
+    /**
+     * Returns a list of all the participants in this session.
+     *
+     * @return the list of clients registered to this session
+     */
+    public List<Client> getParticipants() {
+        return participants;
     }
 
     /**
@@ -144,11 +152,7 @@ public abstract class Session extends Sender {
      * @throws IllegalStateException if the session is full
      */
     public void registerClient(Client client) {
-        if (isFull()) {
-            throw new IllegalStateException("No available spots for session");
-        }
         participants.add(client);
-        attach(client); // For notifications
     }
 
     /**
