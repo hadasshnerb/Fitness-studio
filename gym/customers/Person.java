@@ -1,5 +1,7 @@
 package gym.customers;
 
+import gym.observer.Notification;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;

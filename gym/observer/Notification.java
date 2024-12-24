@@ -1,4 +1,4 @@
-package gym.customers;
+package gym.observer;
 
 /**
  * An interface for adding notifications.
